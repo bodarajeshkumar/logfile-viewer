@@ -1,16 +1,22 @@
 // server.js
 const express = require('express');
-const fs = require('fs');
-const app = express();
-const PORT = process.env.PORT || 3000;
+const path = require('path');
+const bodyParser = require('body-parser');
+const fs = require('fs')
 
+const app = express();
+const port = 3000;
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
 
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 // Define a route to render the file content
 app.get('/', (req, res) => {
     // Read the content of the file
-    fs.readFile('./test.log', 'utf8', (err, data) => {
+    fs.readFile('/projects/allScripts/test.log', 'utf8', (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).send('Error reading file');
@@ -21,6 +27,6 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
